@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 struct Vector
 {
@@ -80,4 +81,26 @@ void vector_foreach(Vector *self, void (*func)(void *, uint32_t))
     {
         func(vector_get(self, index), index);
     }
+}
+
+void vector_remove(Vector *self, uint32_t index);
+void vector_filter(Vector *self, bool (*func)(void *, uint32_t))
+{
+    for (uint32_t index; index < self->size; index++)
+    {
+        if (func(vector_get(self, index), index) == false)
+        {
+            vector_remove(self, index);
+            index--;
+        }
+    }
+}
+
+void vector_remove(Vector *self, uint32_t index)
+{
+    memmove(
+        ((uint8_t *)self->data) + (index * self->type_size),
+        (uint8_t *)(self->data) + ((index + 1) * self->type_size),
+        (self->size - index) * self->type_size);
+    self->size--;
 }
