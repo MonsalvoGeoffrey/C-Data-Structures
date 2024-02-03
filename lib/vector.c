@@ -31,7 +31,11 @@ uint32_t vector_length(Vector *self)
 
 void *vector_get(Vector *self, uint32_t index)
 {
-    // TODO: Error Management
+    if (index > self->size)
+    {
+        fprintf(stderr, "Error: Index %d out of bounds.\n", index);
+        abort(1);
+    }
     return ((uint8_t *)self->data) + (index * self->type_size);
 }
 
@@ -44,7 +48,11 @@ void vector_resize(Vector *self, size_t target)
 
 void vector_insert(Vector *restrict self, void *restrict value, uint32_t index)
 {
-    // TODO: Error Management
+    if (index >= self->size)
+    {
+        fprintf(stderr, "Error: Index %d out of bounds.\n", index);
+        abort(1);
+    }
     if (self->size * self->type_size == self->true_size)
     {
         vector_resize(self, self->true_size * 2);
@@ -59,7 +67,6 @@ void vector_insert(Vector *restrict self, void *restrict value, uint32_t index)
 
 void vector_append(Vector *restrict self, void *restrict value)
 {
-    // TODO: Error Management
     if (self->size * self->type_size == self->true_size)
     {
         vector_resize(self, self->true_size * 2);
