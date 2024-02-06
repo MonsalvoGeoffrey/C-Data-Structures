@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include "lib/vector.c"
+#include "lib/libkelpie.h"
 #include <stdio.h>
 
 #define literal_ptr(type, value) (&(type){value})
@@ -38,7 +38,16 @@ int main(int argc, char const *argv[])
     vector_filter(a, remove_50);  // I wish lambdas were a thing
     vector_foreach(a, print_map); // I wish lambdas were a thing
 
+
+    printf("Split test !\n");
+    Vector *b = split("Hello world everyone. How are you all ?!!! !!!", ' ');
+    vector_foreach(b, print_map); // I wish lambdas were a thing
+    printf("Split end !\n");
+
+
+
     vector_free(a);
+    vector_free_all(b);
 
     printf("END\n");
     return 0;

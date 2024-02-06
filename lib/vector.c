@@ -4,6 +4,11 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+
+
+#ifndef KELPIE_VECTOR
+#define KELPIE_VECTOR
+
 struct Vector
 {
     uint32_t size;
@@ -34,7 +39,7 @@ void *vector_get(Vector *self, uint32_t index)
     if (index > self->size)
     {
         fprintf(stderr, "Error: Index %d out of bounds.\n", index);
-        abort(1);
+        abort();
     }
     return ((uint8_t *)self->data) + (index * self->type_size);
 }
@@ -51,7 +56,7 @@ void vector_insert(Vector *restrict self, void *restrict value, uint32_t index)
     if (index >= self->size)
     {
         fprintf(stderr, "Error: Index %d out of bounds.\n", index);
-        abort(1);
+        abort();
     }
     if (self->size * self->type_size == self->true_size)
     {
@@ -78,6 +83,16 @@ void vector_append(Vector *restrict self, void *restrict value)
 
 void vector_free(Vector *self)
 {
+    free(self->data);
+    free(self);
+}
+
+void vector_free_all(Vector *self)
+{
+    for (uint32_t index; index < self->size; index++)
+    {
+        free(vector_get(self, index));
+    }
     free(self->data);
     free(self);
 }
@@ -111,3 +126,5 @@ void vector_remove(Vector *self, uint32_t index)
         (self->size - index) * self->type_size);
     self->size--;
 }
+
+#endif
