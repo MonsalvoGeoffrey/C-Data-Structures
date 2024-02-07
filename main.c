@@ -10,6 +10,11 @@ void print_map(void *value, uint32_t index)
     printf("The value at index %d is %d\n", index, *(uint16_t *)value);
 }
 
+void print_substrings(void *value, uint32_t index)
+{
+    printf("The value at index %u is %s\n", index, (char *)value);
+}
+
 bool remove_50(void *value, uint32_t index)
 {
     return *(uint16_t *)value != 50;
@@ -41,7 +46,7 @@ int main(int argc, char const *argv[])
 
     printf("Split test !\n");
     Vector *b = split("Hello world everyone. How are you all ?!!! !!!", ' ');
-    vector_foreach(b, print_map); // I wish lambdas were a thing
+    vector_foreach(b, print_substrings); // I wish lambdas were a thing
     printf("Split end !\n");
 
 
